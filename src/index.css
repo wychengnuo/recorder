@@ -1,0 +1,190 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+}
+
+a:link,
+a:hover,
+a:focus {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    text-decoration: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 640px;
+    height: 100%;
+    text-align: center;
+    overflow: hidden;
+    background: url('./images/timg.jpg');
+    background-size: 100% 100%;
+}
+
+#play {
+    /* display: none; */
+    margin: 0 auto;
+}
+
+.time-container {
+    /* display: none; */
+    margin-top: 10px;
+}
+
+.recording-container {
+    height: 100%;
+}
+
+.footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+.start-btn {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: url('./images/voice.svg');
+    background-size: 100% 100%;
+    display: block;
+    border: 1px #FF9000 solid;
+    z-index: 1;
+    border-radius: 100%;
+    margin: 0 auto;
+}
+
+
+.animate {
+    display: none;
+}
+
+.animate .round {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    width: 100px;
+    height: 100px;
+    border: 1px #FF9000 solid;
+    border-radius: 100%;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.animate .round1 {
+    animation: scale 1s .01s linear infinite both;
+}
+
+.animate .round2 {
+    animation: scale 1s .34s linear infinite both;
+}
+
+.animate .round3 {
+    animation: scale 1s .67s linear infinite both;
+}
+
+.recording {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 120px;
+    max-height: 75%;
+    overflow-y: scroll;
+}
+
+.left {
+    text-align: left;
+    float: left;
+}
+
+.right {
+    text-align: right;
+    float: right;
+}
+
+.record-item {
+    width: 80%;
+    display: block;
+}
+
+.record-item .record-time {
+    font-size: 12px;
+    color: #999;
+    padding: 5px 0 10px;
+}
+
+.record-item .record-content {
+    font-size: 14px;
+    color: #333;
+    padding: 5px 10px;
+    background: #fff;
+    display: inline-block;
+    border-radius: 5px;
+    position: relative;
+}
+
+.record-item .record-content::before {
+    content: "";
+    display: block;
+    border-width: 8px;
+    position: absolute;
+    top: 50%;
+    border-style: solid;
+    font-size: 0;
+    line-height: 0;
+    transform: translateY(-50%);
+}
+
+.left .record-content::before {
+    border-color: transparent #fff transparent transparent;
+    left: -14px;
+}
+
+.right .record-content::before {
+    border-color: transparent transparent transparent #fff;
+    right: -14px;
+}
+
+.record-item .play {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: url('./images/playback.png');
+    background-size: 100% 100%;
+    margin: 0 5px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+@keyframes scale {
+    0% {
+        transform: translateX(-50%) scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%) scale(3);
+        opacity: 0;
+    }
+}
