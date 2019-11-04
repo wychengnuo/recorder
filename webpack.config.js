@@ -13,9 +13,9 @@ module.exports = {
         // host: '192.168.199.224',
         port: 9000,
         proxy: {
-            '/test': {
-                target: 'http://192.168.199.227:9800/',
-                // target: 'http://192.168.199.227:9000/',
+            '/api/test': {
+                // target: 'http://192.168.199.227:9800/',
+                target: 'http://192.168.199.227:9000/',
                 changeOrigin: true,
                 // pathRewrite: {
                 //     '^/test': 'm/v1/test'

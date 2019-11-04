@@ -1,7 +1,5 @@
 import adapter from 'webrtc-adapter';
-import {
-    Base64
-} from 'js-base64';
+import base64 from './base64';
 
 export default function (window) {
     //兼容
@@ -132,7 +130,6 @@ export default function (window) {
                 // return new Blob([data], {
                 //     type: 'audio/wav'
                 // });
-                console.log(data, '=====')
                 return data;
             }
         };
@@ -158,35 +155,27 @@ export default function (window) {
             });
         }
 
-        this.getBlob2 = function(data) {
-            // const arr = data.split(',');
-            // const bstr = atob(arr[1]);
-            
-            // const bstr = atob(data);
-            const bstr = data;
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-
+        this.getBlob2 = function (data) {
+            const buffer = base64.decodeArrayBuffer(data);
+            var u8arr = new DataView(buffer);
             return new Blob([u8arr], {
                 type: 'audio/wav'
             });
         }
-        
+
         //获取音频文件
         this.getData = function () {
             this.stop();
 
             let data = audioData.encodeWAV();
-            let bytes = new Uint8Array(data.buffer);
-            let binary = '';
-            const len = bytes.byteLength;
-            for (let i = 0; i < len; i += 1) {
-                binary += String.fromCharCode(bytes[i]);
-            }
-            return binary;
+            // let bytes = new Uint8Array(data.buffer);
+            // let binary = '';
+            // const len = bytes.byteLength;
+            // for (let i = 0; i < len; i += 1) {
+            //     binary += String.fromCharCode(bytes[i]);
+            // }
+            // return binary;
+            return base64.encode(data.buffer);
         }
 
         //回放
@@ -204,25 +193,23 @@ export default function (window) {
         this.upload = function (url, callback) {
             var _this = this;
 
-            var fd = new FormData();
-            var data = this.getData();
-            var str = Base64.encode(data);
-            fd.append('content', str);
+            // var fd = new FormData();
+            var str = this.getData();
+            // var str = Base64.encode(data);
+            // fd.append('content', str);
+            const fd = {
+                queryAudio: str,
+            };
 
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         let data = xhr.responseText;
-                        let {
-                            result
-                        } = JSON.parse(data);
-                        result.answerAudio = Base64.decode(result.answerAudio);
+                        let result = JSON.parse(data);
+                        // result.answerAudio = Base64.decode(result.answerAudio);
                         result.answerAudio = _this.getBlob2(result.answerAudio);
-                        // result.test = Base64.decode(result.test);
                         // result.test = _this.getBlob2(result.test);
-                        // debugger/
-                        // result.test = Base64.decode(result.test);
                         callback(result);
                     } else {
 
@@ -231,8 +218,8 @@ export default function (window) {
             }
             xhr.open('POST', url);
             // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            // xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.send(fd);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.send(JSON.stringify(fd));
         }
 
         //音频采集

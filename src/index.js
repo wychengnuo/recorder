@@ -30,8 +30,8 @@ $(function () {
         stopRecording();
 
         // 上传音频文件
-        recorder.upload('http://localhost:9800/test', function (data) {
-        // recorder.upload('/test', function (data) {
+        // recorder.upload('http://localhost:9800/test', function (data) {
+        recorder.upload('/api/test', function (data) {
             playRecording(data);
             addEvent();
             // recorder.play2(audio, array[0]);
