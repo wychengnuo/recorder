@@ -15,7 +15,8 @@ export default function (window) {
         adapter.msGetUserMedia ||
         adapter.mediaDevices;
     var HZRecorder = function (stream, config) {
-        config = config || {};
+        config = config || { sampleBits: 16, sampleRate: 16000 };
+        // config = config || {};
         config.sampleBits = config.sampleBits || 8; //采样数位 8, 16
         config.sampleRate = config.sampleRate || (44100 / 6); //采样率(1/6 44100)
 
