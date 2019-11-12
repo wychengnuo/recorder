@@ -6,7 +6,6 @@ window.οnlοad = function () {
 };
 
 $(function () {
-    var array = [];
     var lock = false;
     var recorder;
     var HZRecorder = recordering(window);
@@ -15,6 +14,17 @@ $(function () {
     var audio = document.querySelector('audio');
 
     // 绑定事件
+    document.getElementById('startBtn').addEventListener('mousedown', function (e) {
+        if (lock) return;
+        startRecording();
+        lock = true;
+    });
+    document.getElementById('startBtn').addEventListener('mouseup', function (e) {
+        $('.animate').hide();
+        stopRecording();
+        // 上传音频文件
+        uploadFile();
+    });
     document.getElementById('startBtn').addEventListener('touchstart', function (e) {
         e.preventDefault();
         if (lock) return;
@@ -28,15 +38,17 @@ $(function () {
         e.preventDefault();
         $('.animate').hide();
         stopRecording();
-
         // 上传音频文件
-        // recorder.upload('http://localhost:9800/test', function (data) {
-        recorder.upload('/api/test', function (data) {
+        uploadFile();
+    });
+
+    // 上传音频文件
+    function uploadFile() {
+        recorder.upload('/test', function (data) {
             playRecording(data);
             addEvent();
-            // recorder.play2(audio, array[0]);
         })
-    });
+    }
 
     // 开始录音
     function startRecording() {
@@ -69,23 +81,16 @@ $(function () {
         var rightElement = '<div class="record-item right">' +
             '<p class="record-time flex">' +
                 'answer' +
-                '<a href="javascript:;" class="play" id="' + array.length + '_id"></a>' +
+                '<a href="javascript:;" class="play"></a>' +
             '</p>' +
             '<div class="record-content">' + answer + '</div>' +
             '</div>';
 
-        var container = document.createElement('div');
-        container.setAttribute('class', 'record-container');
-        container.innerHTML = leftElement + rightElement;
-        array.push(answerAudio);
-        document.getElementsByClassName('recording')[0].appendChild(container);
-    }
-
-    // 添加动画
-    function addAnimate() {
-        $('.animate').html(
-            '<div class="round round1"></div><div class="round round2"></div><div class="round round3"></div>'
-        );
+        var recording = document.getElementsByClassName('recording')[0];
+        recording.innerHTML = leftElement + rightElement;
+        // 自动播放
+        audio.src = window.URL.createObjectURL(answerAudio);
+        audio.play();
     }
 
     // 点击播放
@@ -93,14 +98,7 @@ $(function () {
         var playBtn = document.getElementsByClassName('play');
         if (playBtn && playBtn[0]) {
             playBtn[0].onclick = function (e) {
-                var id = e.target.getAttribute('id');
-                var index = id.substring(0, id.indexOf('_'));
-
-                var data = array[index];
-                if (data) {
-                    audio.src = window.URL.createObjectURL(data);
-                    audio.play();
-                }
+                audio.play();
             };
         }
     }
